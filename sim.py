@@ -7,6 +7,7 @@ from binance.client import Client
 import time
 import pandas as pd
 from multiprocessing import Process
+import logging
 
 def data():
     global closeP
@@ -55,7 +56,8 @@ def emacross():
             # data()
             # time.sleep(10)
 
-        print(walletEMA)
+        # print(walletEMA)
+        logging.info(walletEMA)
         data()
         time.sleep(10)
 
@@ -68,7 +70,8 @@ def befema():
             if closeP['price'].iloc[49] > closeP['ema50'].iloc[49]:
                 print(buy(10, walletbef))
                 break
-            print(walletbef)
+            # print(walletbef)
+            logging.info(walletbef)
             data()
             time.sleep(10)
 
@@ -81,11 +84,13 @@ def befema():
             if closeP['price'].iloc[49] < closeP['ema50'].iloc[49] and count == 1:
                 print(sell(0.005, walletbef))
                 break
-            print(walletbef)
+            # print(walletbef)
+            logging.info(walletbef)
             data()
             time.sleep(10)
 
-        print(walletbef)
+        # print(walletbef)
+        logging.info(walletbef)
         data()
         time.sleep(10)
 
