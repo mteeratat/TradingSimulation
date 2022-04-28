@@ -63,7 +63,7 @@ def befema():
     while(True):
 
         while(closeP['ema20'].iloc[49] < closeP['ema50'].iloc[49]):
-            print("bearish2")
+            # print("bearish2")
             if closeP['price'].iloc[49] > closeP['ema50'].iloc[49]:
                 print(buy(10, walletbef))
                 break
@@ -72,7 +72,7 @@ def befema():
 
         count = 0
         while(closeP['ema20'].iloc[49] > closeP['ema50'].iloc[49]):
-            print("bullish2")
+            # print("bullish2")
             if closeP['price'].iloc[49] < closeP['ema20'].iloc[49] and count == 0:
                 print(sell(0.005, walletbef))
                 count = 1
