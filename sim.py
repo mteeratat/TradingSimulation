@@ -7,28 +7,51 @@ from binance.client import Client
 import time
 import pandas as pd
 
-def buy(amount):
+def data():
+    global close, closeP, btcusdt
+    candles = client.get_klines(symbol='BTCUSDT', interval=Client.KLINE_INTERVAL_1MINUTE, limit=50)
+    print(len(candles))
+    for c in candles:
+        close.append(c[4])
+    closeP = pd.DataFrame({'price': close})
+    closeP['ema20'] = closeP['price'].ewm(span=20, adjust=False).mean()
+    closeP['ema50'] = closeP['price'].ewm(span=50, adjust=False).mean()
+    print(closeP.iloc[49])
+    btcusdt = client.get_symbol_ticker(symbol='BTCUSDT')
+
+def buy(amount, wallet):
     wallet["USDT"] -= amount
     wallet["BTC"] += amount/float(btcusdt['price'])
     print("buy")
     return wallet
 
-def sell(amount):
+def sell(amount, wallet):
     wallet["BTC"] -= amount
     wallet["USDT"] += amount*float(btcusdt['price'])
     print("sell")
     return wallet
 
 def emacross():
-    if closeP['ema20'] > closeP['ema50']:
-        while(True):
-            if closeP['ema20'] < closeP['ema50']:
-                print(sell(wallet["BTC"]))
-    if closeP['ema20'] < closeP['ema50']:
-        while(True):
-            if closeP['ema20'] > closeP['ema50']:
-                print(buy(wallet["BTC"]))
+    while(True):
+        while(closeP['ema20'].iloc[49] > closeP['ema50'].iloc[49] and float(btcusdt['price']) > closeP['ema20'].iloc[49]):
+            print("s")
+            data()
+            if closeP['ema20'].iloc[49] < closeP['ema50'].iloc[49]:
+                print("sell")
+                print(sell(0.01, walletEMA))
+                break
+            time.sleep(10)
+        while(closeP['ema20'].iloc[49] < closeP['ema50'].iloc[49] and float(btcusdt['price']) < closeP['ema20'].iloc[49]):
+            print("b")
+            data()
+            if closeP['ema20'].iloc[49] > closeP['ema50'].iloc[49]:
+                print("buy")
+                print(buy(10, walletEMA))
+                break
+            time.sleep(10)
+            # print(buy(10, walletEMA))
 
+# def befema():
 
 api_key = os.environ.get('binance_api')
 api_secret = os.environ.get('binance_secret')
@@ -41,24 +64,17 @@ client = Client(api_key, api_secret)
     # print(btcusdt)
 
 close = []
-wallet = {"USDT": 1000, "BTC": 0}
-
-candles = client.get_klines(symbol='BTCUSDT', interval=Client.KLINE_INTERVAL_1MINUTE, limit=50)
-print(len(candles))
-# print(candles)
-for c in candles:
-    close.append(c[4])
-
-# print(close)
-
-closeP = pd.DataFrame({'price': close})
-closeP['ema20'] = closeP['price'].ewm(span=20, adjust=False).mean()
-closeP['ema50'] = closeP['price'].ewm(span=50, adjust=False).mean()
-print(closeP)
-btcusdt = client.get_symbol_ticker(symbol='BTCUSDT')
-print(btcusdt['price'])
+walletEMA = {"USDT": 1000, "BTC": 1}
+walletbef = {"USDT": 1000, "BTC": 1}
+closeP = pd.DataFrame
+btcusdt = {}
+# print(btcusdt['price'])
 # print(client.get_exchange_info())
 
 # print(buy(10))
 # print(sell(0.00005))
+# print(closeP['ema20'].iloc[49])
+
+data()
+
 emacross()
