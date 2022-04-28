@@ -55,6 +55,7 @@ def emacross():
             # data()
             # time.sleep(10)
 
+        print(walletEMA)
         data()
         time.sleep(10)
 
@@ -67,6 +68,7 @@ def befema():
             if closeP['price'].iloc[49] > closeP['ema50'].iloc[49]:
                 print(buy(10, walletbef))
                 break
+            print(walletbef)
             data()
             time.sleep(10)
 
@@ -79,9 +81,11 @@ def befema():
             if closeP['price'].iloc[49] < closeP['ema50'].iloc[49] and count == 1:
                 print(sell(0.005, walletbef))
                 break
+            print(walletbef)
             data()
             time.sleep(10)
 
+        print(walletbef)
         data()
         time.sleep(10)
 
