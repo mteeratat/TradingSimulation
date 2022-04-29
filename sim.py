@@ -2,13 +2,14 @@
 # https://algotrading101.com/learn/binance-python-api-guide/
 # https://binance-docs.github.io/apidocs/spot/en/#general-info
 
+from distutils.log import INFO
 import os
 from binance.client import Client
 import time
 import pandas as pd
 from multiprocessing import Process
-# import logging
-import sys
+import logging
+# import sys
 
 def data():
     global closeP
@@ -57,9 +58,9 @@ def emacross():
             # data()
             # time.sleep(10)
 
-        print(walletEMA)
-        sys.stdout.flush()
-        # logging.info(walletEMA)
+        # print(walletEMA)
+        # sys.stdout.flush()
+        logging.info(walletEMA)
         data()
         time.sleep(10)
 
@@ -72,9 +73,9 @@ def befema():
             if closeP['price'].iloc[49] > closeP['ema50'].iloc[49]:
                 print(buy(10, walletbef))
                 break
-            print(walletbef)
-            sys.stdout.flush()
-            # logging.info(walletbef)
+            # print(walletbef)
+            # sys.stdout.flush()
+            logging.info(walletbef)
             data()
             time.sleep(10)
 
@@ -87,17 +88,19 @@ def befema():
             if closeP['price'].iloc[49] < closeP['ema50'].iloc[49] and count == 1:
                 print(sell(0.005, walletbef))
                 break
-            print(walletbef)
-            sys.stdout.flush()
-            # logging.info(walletbef)
+            # print(walletbef)
+            # sys.stdout.flush()
+            logging.info(walletbef)
             data()
             time.sleep(10)
 
-        print(walletbef)
-        sys.stdout.flush()
-        # logging.info(walletbef)
+        # print(walletbef)
+        # sys.stdout.flush()
+        logging.info(walletbef)
         data()
         time.sleep(10)
+
+logging.basicConfig(level=logging.INFO)
 
 api_key = os.environ.get('binance_api')
 api_secret = os.environ.get('binance_secret')
