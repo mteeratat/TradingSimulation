@@ -106,7 +106,7 @@ logging.basicConfig(level=logging.INFO)
 api_key = os.environ.get('binance_api')
 api_secret = os.environ.get('binance_secret')
 
-client = Client(api_key, api_secret, {"verify": False, "timeout": 60})
+client = Client(api_key, api_secret, {"timeout": 60})
 
 close = []
 walletEMA = {"name": "emacross", "USDT": 1000, "BTC": 1}
