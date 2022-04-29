@@ -23,4 +23,3 @@ ujson==5.2.0
 urllib3==1.26.9
 websockets==10.3
 yarl==1.7.2
-https://github.com/sammchardy/python-binance
