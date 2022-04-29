@@ -14,14 +14,15 @@ import urllib3
 def data():
     global closeP
     close = []
-    candles = client.get_klines(symbol='BTCUSDT', interval=Client.KLINE_INTERVAL_1MINUTE, limit=50)
+    candles = client.get_klines(symbol='BTCUSDT', interval=Client.KLINE_INTERVAL_15MINUTE, limit=51)
+    time.sleep(1)
     # print(len(candles))
     for c in candles:
         close.append(float(c[4]))
     closeP = pd.DataFrame({'price': close})
     closeP['ema20'] = closeP['price'].ewm(span=20, adjust=False).mean()
     closeP['ema50'] = closeP['price'].ewm(span=50, adjust=False).mean()
-    # print(closeP.iloc[49])
+    print(closeP.iloc[49])
 
 def buy(amount, wallet):
     wallet["USDT"] -= amount
@@ -67,11 +68,13 @@ def emacross():
 def befema():
     print("befema START!")
     while(True):
-
+        
+        count = 0
         while(closeP['ema20'].iloc[49] < closeP['ema50'].iloc[49]):
             # print("bearish2")
-            if closeP['price'].iloc[49] > closeP['ema50'].iloc[49]:
+            if closeP['price'].iloc[49] > closeP['ema50'].iloc[49] and count == 0:
                 print(buy(10, walletbef))
+                count = 1
                 break
             print(walletbef)
             # sys.stdout.flush()
@@ -79,14 +82,15 @@ def befema():
             data()
             time.sleep(10)
 
-        count = 0
+        count2 = 0
         while(closeP['ema20'].iloc[49] > closeP['ema50'].iloc[49]):
             # print("bullish2")
-            if closeP['price'].iloc[49] < closeP['ema20'].iloc[49] and count == 0:
+            if closeP['price'].iloc[49] < closeP['ema20'].iloc[49] and count2 == 0:
                 print(sell(0.005, walletbef))
-                count = 1
-            if closeP['price'].iloc[49] < closeP['ema50'].iloc[49] and count == 1:
+                count2 = 1
+            if closeP['price'].iloc[49] < closeP['ema50'].iloc[49] and count2 == 1:
                 print(sell(0.005, walletbef))
+                count2 = 2
                 break
             print(walletbef)
             # sys.stdout.flush()
@@ -94,9 +98,9 @@ def befema():
             data()
             time.sleep(10)
 
-        # print(walletbef)
+        print(walletbef)
         # sys.stdout.flush()
-        logging.info(walletbef)
+        # logging.info(walletbef)
         data()
         time.sleep(10)
 
