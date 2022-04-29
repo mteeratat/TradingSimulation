@@ -120,15 +120,15 @@ closeP = pd.DataFrame
 data()
 time.sleep(1)
 
-# emacross()
+emacross()
 
-if __name__ == '__main__':
-    p1 = Process(target=emacross)
-    p2 = Process(target=befema)
+# if __name__ == '__main__':
+#     p1 = Process(target=emacross)
+#     p2 = Process(target=befema)
 
-    p1.start()
-    time.sleep(1)
-    p2.start()
+#     p1.start()
+#     time.sleep(1)
+#     p2.start()
 
-    p1.join()
-    p2.join()
+#     p1.join()
+#     p2.join()
