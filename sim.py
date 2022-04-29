@@ -14,7 +14,7 @@ import urllib3
 def data():
     global closeP
     close = []
-    candles = client.get_klines(symbol='BTCUSDT', interval=Client.KLINE_INTERVAL_15MINUTE, limit=51)
+    candles = client.get_klines(symbol='BTCUSDT', interval=Client.KLINE_INTERVAL_1MINUTE, limit=51)
     time.sleep(1)
     # print(len(candles))
     for c in candles:
@@ -22,7 +22,7 @@ def data():
     closeP = pd.DataFrame({'price': close})
     closeP['ema20'] = closeP['price'].ewm(span=20, adjust=False).mean()
     closeP['ema50'] = closeP['price'].ewm(span=50, adjust=False).mean()
-    print(closeP.iloc[49])
+    # print(closeP.iloc[49])
 
 def buy(amount, wallet):
     wallet["USDT"] -= amount
@@ -63,7 +63,7 @@ def emacross():
         # sys.stdout.flush()
         # logging.info(walletEMA)
         data()
-        time.sleep(10)
+        time.sleep(1)
 
 def befema():
     print("befema START!")
@@ -80,7 +80,7 @@ def befema():
             # sys.stdout.flush()
             # logging.info(walletbef)
             data()
-            time.sleep(10)
+            time.sleep(1)
 
         count2 = 0
         while(closeP['ema20'].iloc[49] > closeP['ema50'].iloc[49]):
@@ -96,13 +96,13 @@ def befema():
             # sys.stdout.flush()
             # logging.info(walletbef)
             data()
-            time.sleep(10)
+            time.sleep(1)
 
         print(walletbef)
         # sys.stdout.flush()
         # logging.info(walletbef)
         data()
-        time.sleep(10)
+        time.sleep(1)
 
 logging.basicConfig(level=logging.INFO)
 # urllib3.disable_warnings()
@@ -118,6 +118,7 @@ walletbef = {"name": "befema", "USDT": 1000, "BTC": 1}
 closeP = pd.DataFrame
 
 data()
+time.sleep(1)
 
 # emacross()
 
@@ -126,6 +127,7 @@ if __name__ == '__main__':
     p2 = Process(target=befema)
 
     p1.start()
+    time.sleep(1)
     p2.start()
 
     p1.join()
