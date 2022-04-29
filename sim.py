@@ -2,7 +2,6 @@
 # https://algotrading101.com/learn/binance-python-api-guide/
 # https://binance-docs.github.io/apidocs/spot/en/#general-info
 
-from distutils.log import INFO
 import os
 from binance.client import Client
 import time
@@ -10,6 +9,7 @@ import pandas as pd
 from multiprocessing import Process
 import logging
 # import sys
+import urllib3
 
 def data():
     global closeP
@@ -101,6 +101,7 @@ def befema():
         time.sleep(10)
 
 logging.basicConfig(level=logging.INFO)
+urllib3.disable_warnings()
 
 api_key = os.environ.get('binance_api')
 api_secret = os.environ.get('binance_secret')
@@ -114,14 +115,14 @@ closeP = pd.DataFrame
 
 data()
 
-# emacross()
+emacross()
 
-if __name__ == '__main__':
-    p1 = Process(target=emacross)
-    p2 = Process(target=befema)
+# if __name__ == '__main__':
+#     p1 = Process(target=emacross)
+#     p2 = Process(target=befema)
 
-    p1.start()
-    p2.start()
+#     p1.start()
+#     p2.start()
 
-    p1.join()
-    p2.join()
+#     p1.join()
+#     p2.join()
