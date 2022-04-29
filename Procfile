@@ -1,1 +1,1 @@
-web: python3 sim.py
+worker: python3 sim.py
