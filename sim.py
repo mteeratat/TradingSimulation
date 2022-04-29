@@ -58,9 +58,9 @@ def emacross():
             # data()
             # time.sleep(10)
 
-        # print(walletEMA)
+        print(walletEMA)
         # sys.stdout.flush()
-        logging.info(walletEMA)
+        # logging.info(walletEMA)
         data()
         time.sleep(10)
 
@@ -73,9 +73,9 @@ def befema():
             if closeP['price'].iloc[49] > closeP['ema50'].iloc[49]:
                 print(buy(10, walletbef))
                 break
-            # print(walletbef)
+            print(walletbef)
             # sys.stdout.flush()
-            logging.info(walletbef)
+            # logging.info(walletbef)
             data()
             time.sleep(10)
 
@@ -88,9 +88,9 @@ def befema():
             if closeP['price'].iloc[49] < closeP['ema50'].iloc[49] and count == 1:
                 print(sell(0.005, walletbef))
                 break
-            # print(walletbef)
+            print(walletbef)
             # sys.stdout.flush()
-            logging.info(walletbef)
+            # logging.info(walletbef)
             data()
             time.sleep(10)
 
@@ -115,14 +115,14 @@ closeP = pd.DataFrame
 
 data()
 
-emacross()
+# emacross()
 
-# if __name__ == '__main__':
-#     p1 = Process(target=emacross)
-#     p2 = Process(target=befema)
+if __name__ == '__main__':
+    p1 = Process(target=emacross)
+    p2 = Process(target=befema)
 
-#     p1.start()
-#     p2.start()
+    p1.start()
+    p2.start()
 
-#     p1.join()
-#     p2.join()
+    p1.join()
+    p2.join()
