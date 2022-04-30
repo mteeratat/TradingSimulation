@@ -7,6 +7,7 @@ from binance.client import Client
 import time
 import pandas as pd
 from multiprocessing import Process
+import threading
 import logging
 # import sys
 import urllib3
@@ -15,7 +16,7 @@ def data():
     global closeP
     close = []
     candles = client.get_klines(symbol='BTCUSDT', interval=Client.KLINE_INTERVAL_1MINUTE, limit=51)
-    time.sleep(60)
+    time.sleep(1)
     # print(len(candles))
     for c in candles:
         close.append(float(c[4]))
@@ -123,11 +124,20 @@ time.sleep(1)
 # emacross()
 
 if __name__ == '__main__':
-    p1 = Process(target=emacross)
-    p2 = Process(target=befema)
+    # p1 = Process(target=emacross)
+    # p2 = Process(target=befema)
 
-    p1.start()
-    p2.start()
+    # p1.start()
+    # p2.start()
 
-    p1.join()
-    p2.join()
+    # p1.join()
+    # p2.join()
+
+    t1 = threading.Thread(target=emacross)
+    t2 = threading.Thread(target=befema)
+
+    t1.start()
+    t2.start()
+
+    t1.join()
+    t2.join()
