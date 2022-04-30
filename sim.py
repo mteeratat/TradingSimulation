@@ -15,7 +15,7 @@ def data():
     global closeP
     close = []
     candles = client.get_klines(symbol='BTCUSDT', interval=Client.KLINE_INTERVAL_1MINUTE, limit=51)
-    time.sleep(1)
+    time.sleep(60)
     # print(len(candles))
     for c in candles:
         close.append(float(c[4]))
@@ -127,7 +127,6 @@ if __name__ == '__main__':
     p2 = Process(target=befema)
 
     p1.start()
-    time.sleep(1)
     p2.start()
 
     p1.join()
